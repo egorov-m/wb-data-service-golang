@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  wb_db:
+    container_name: "wb_db"
+    image: postgres:15.5-alpine
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wb_db
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+    volumes:
+      - ./wb_db_data:/var/lib/postgresql/data
+    ports:
+      - "5438:5432"
+    networks:
+      - wb
+  redis:
+    container_name: "redis"
+    image: redis:alpine
+    restart: on-failure
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6375:6379"
+    networks:
+      - wb
+
+networks:
+  wb:
+    driver: bridge
