@@ -16,13 +16,17 @@ func (wbTasks *_WbTasks) LoadPriceHistory(ctx context.Context, task *asynq.Task)
 		return err
 	}
 
-	url := GetUrlPriceHistory(data["nm_id"].(int))
+	nmIdFloat := data["nm_id"].(float64)
+	url := GetUrlPriceHistory(int(nmIdFloat))
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
 	}
 
 	resp, err := wbTasks.HttpSession.SendRequest(ctx, req)
+	if err != nil {
+		return err
+	}
 	fmt.Println(resp.StatusCode)
 
 	return nil

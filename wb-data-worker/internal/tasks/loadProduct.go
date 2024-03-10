@@ -16,13 +16,16 @@ func (wbTasks *_WbTasks) LoadProduct(ctx context.Context, task *asynq.Task) erro
 		return err
 	}
 
-	url := CardDetailBaseUrl + data["nm_id"].(string)
+	url := CardDetailBaseUrl + fmt.Sprintf("%d", data["nm_id"])
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
 	}
 
 	resp, err := wbTasks.HttpSession.SendRequest(ctx, req)
+	if err != nil {
+		return err
+	}
 	fmt.Println(resp.StatusCode)
 
 	return nil

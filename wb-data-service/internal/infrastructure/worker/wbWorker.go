@@ -3,6 +3,7 @@ package worker
 import (
 	"context"
 	"github.com/hibiken/asynq"
+	"time"
 	"wb-data-service-golang/wb-data-service/internal/domain"
 )
 
@@ -23,7 +24,7 @@ func (worker *_WbWorker) ProcessTask(ctx context.Context, queueLevel string, tas
 }
 
 func (worker *_WbWorker) ProcessTaskByName(ctx context.Context, queueLevel string, taskName string, payload []byte) (*asynq.TaskInfo, error) {
-	task := asynq.NewTask(taskName, payload)
+	task := asynq.NewTask(taskName, payload, asynq.MaxRetry(1), asynq.Timeout(2*time.Minute))
 	res, err := worker.Client.EnqueueContext(ctx, task, asynq.Queue(queueLevel))
 
 	return res, err
