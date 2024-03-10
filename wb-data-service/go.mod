@@ -1,6 +1,6 @@
 module wb-data-service-golang/wb-data-service
 
-go 1.21.6
+go 1.22.1
 
 require (
 	github.com/doug-martin/goqu/v9 v9.19.0

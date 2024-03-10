@@ -1,7 +1,7 @@
 CREATE TABLE "user" (
     id INTEGER GENERATED ALWAYS AS IDENTITY CONSTRAINT user_table_pk PRIMARY KEY,
-    username VARCHAR(255),
-    email VARCHAR(255) NOT NULL,
+    username VARCHAR(255) UNIQUE,
+    email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(512) NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
