@@ -13,12 +13,18 @@ type Config struct {
 	PasswordSalt string        `mapstructure:"PASSWORD_SALT"`
 	TokenSignKey string        `mapstructure:"TOKEN_SIGN_KEY"`
 	TokenTTL     time.Duration `mapstructure:"TOKEN_TTL"`
+	Redis        RedisConfig   `mapstructure:"REDIS"`
 }
 
 type ServerConfig struct {
 	Host    string        `mapstructure:"HOST"`
 	Port    int           `mapstructure:"PORT"`
 	Timeout time.Duration `mapstructure:"TIMEOUT"`
+}
+
+type RedisConfig struct {
+	Host string `mapstructure:"HOST"`
+	Port int    `mapstructure:"PORT"`
 }
 
 func New(path string) *Config {

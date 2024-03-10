@@ -23,8 +23,8 @@ func NewCryptoManager(passwordSalt string) domain.CryptoManager {
 }
 
 func (crypto *_CryptoManager) Encrypt(value string) (string, error) {
-	crypto.Lock()
-	defer crypto.Unlock()
+	crypto.Mutex.Lock()
+	defer crypto.Mutex.Unlock()
 
 	crypto.Hash.Write(byteconv.Bytes(value))
 	encryptValue := crypto.Hash.Sum(crypto.PasswordSalt)

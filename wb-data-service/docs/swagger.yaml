@@ -1,0 +1,311 @@
+basePath: /api/v1
+definitions:
+  core.PriceHistory:
+    properties:
+      dt:
+        example: 2024-02-11 18:57:11.811169+00
+        type: string
+      id:
+        example: 1
+        type: integer
+      nm_id:
+        example: 139760729
+        type: integer
+      price:
+        example: 20199000
+        type: integer
+    type: object
+  core.Product:
+    properties:
+      brand:
+        example: Apple
+        type: string
+      brand_id:
+        example: 6049
+        type: integer
+      colors:
+        example: фиолетовый
+        type: string
+      created_at:
+        example: 2024-02-11 18:57:11.811169+00
+        type: string
+      feedbacks:
+        example: 31
+        type: integer
+      name:
+        example: iPhone 14 Pro Max 1TB
+        type: string
+      nm_id:
+        example: 139760729
+        type: integer
+      price:
+        example: 20199000
+        type: integer
+      quantity:
+        example: 0
+        type: integer
+      rating:
+        example: 5
+        type: number
+      sale:
+        example: 6
+        type: integer
+      sale_price:
+        example: 18987000
+        type: integer
+      site_brand_id:
+        example: 16049
+        type: integer
+      supplier_id:
+        example: 887491
+        type: integer
+      updated_at:
+        example: 2024-02-11 18:57:11.811169+00
+        type: string
+    type: object
+  core.Token:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  request.LoadPriceHistoryInBody:
+    properties:
+      nm_id:
+        type: integer
+    required:
+    - nm_id
+    type: object
+  request.LoadProductInBody:
+    properties:
+      nm_id:
+        type: integer
+    required:
+    - nm_id
+    type: object
+  request.SignInBody:
+    properties:
+      email:
+        maxLength: 360
+        type: string
+      password:
+        maxLength: 100
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.SignUpBody:
+    properties:
+      email:
+        maxLength: 360
+        type: string
+      password:
+        maxLength: 100
+        minLength: 8
+        type: string
+      username:
+        maxLength: 255
+        type: string
+    required:
+    - email
+    - password
+    type: object
+info:
+  contact: {}
+  license:
+    name: MIT license
+    url: https://github.com/egorov-m/wb-data-service-golang/blob/main/LICENSE
+  title: Wildberries product service API.
+  version: 0.0.1
+paths:
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Sign in
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/request.SignInBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Token'
+      summary: Sign in
+      tags:
+      - Auth
+  /auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Sign up
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/request.SignUpBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Token'
+      summary: Sign up
+      tags:
+      - Auth
+  /price-history:
+    get:
+      parameters:
+      - description: Wb product nm id
+        in: path
+        name: nm_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/core.PriceHistory'
+            type: array
+      security:
+      - Bearer: []
+      summary: Get price history by product nm id
+      tags:
+      - Price history
+  /price-history/load:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Nm id from load
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoadPriceHistoryInBody'
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: boolean
+      security:
+      - Bearer: []
+      summary: Load price history from wb
+      tags:
+      - Price history
+  /product:
+    delete:
+      parameters:
+      - description: Wb nm id
+        in: path
+        name: nm_id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: boolean
+      security:
+      - Bearer: []
+      summary: Delete product by nm id
+      tags:
+      - Product
+    get:
+      parameters:
+      - description: Wb nm id
+        in: path
+        name: nm_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/core.Product'
+      security:
+      - Bearer: []
+      summary: Get product by nm id
+      tags:
+      - Product
+  /product/all:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/core.Product'
+            type: array
+      security:
+      - Bearer: []
+      summary: Get all products
+      tags:
+      - Product
+  /product/count:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      security:
+      - Bearer: []
+      summary: Get count products
+      tags:
+      - Product
+  /product/load:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Nm id from load
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoadProductInBody'
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            type: boolean
+      security:
+      - Bearer: []
+      summary: Load product from wb
+      tags:
+      - Product
+  /product/quantity:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+      security:
+      - Bearer: []
+      summary: Quantity of products available
+      tags:
+      - Product
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

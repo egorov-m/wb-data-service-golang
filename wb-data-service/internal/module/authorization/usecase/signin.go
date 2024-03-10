@@ -22,7 +22,7 @@ func (useCase *_AuthorizationUseCase) SignIn(ctx context.Context, entity user.Us
 	user, err := useCase.UserRepository.GetByCreds(ctx, entity)
 	if err != nil {
 		useCase.Logger.Error(errors.Wrap(err, "get user error"), nil)
-		return token.Token{}, domain.ErrorInternalServer
+		return token.Token{}, domain.ErrorSignIn
 	}
 
 	if user.IsEmpty() {
@@ -30,7 +30,7 @@ func (useCase *_AuthorizationUseCase) SignIn(ctx context.Context, entity user.Us
 			"user_email":    entity.Email,
 			"user_password": entity.Password,
 		})
-		return token.Token{}, domain.ErrorNotFound
+		return token.Token{}, domain.ErrorSignIn
 	}
 
 	tokenModel, err := useCase.GenerateUserTokens(ctx, user)

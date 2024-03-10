@@ -8,4 +8,5 @@ var (
 	ErrorInvalidType     = errors.New("invalid type error")
 	ErrorInvalidToken    = errors.New("invalid token")
 	ErrorExpirationToken = errors.New("token expiration")
+	ErrorSignIn          = errors.New("password or email is not correct")
 )

@@ -3,7 +3,6 @@ package usecase
 import (
 	"context"
 	"github.com/pkg/errors"
-	"strings"
 	"time"
 	"wb-data-service-golang/wb-data-service/internal/domain"
 	"wb-data-service-golang/wb-data-service/internal/module/authorization/core"
@@ -53,18 +52,17 @@ func (useCase *_AuthorizationUseCase) GenerateUserTokens(ctx context.Context, en
 }
 
 func (useCase *_AuthorizationUseCase) GenerateAndSetPassword(ctx context.Context, entity *user.User) error {
-	password, err := useCase.PasswordRepository.GeneratePassword(ctx, entity.Password)
+	pass, err := useCase.PasswordRepository.GeneratePassword(ctx, entity.Password)
 	if err != nil {
 		return errors.Wrap(err, "generate password error")
 	}
-	entity.Password = password
+	entity.Password = pass
 
 	return nil
 }
 
 func (useCase *_AuthorizationUseCase) CheckToken(ctx context.Context, bearerToken string) (int, error) {
-	splitted := strings.Split(bearerToken, " ")
-	claims, err := useCase.TokenRepository.DecodeToken(ctx, splitted[1])
+	claims, err := useCase.TokenRepository.DecodeToken(ctx, bearerToken)
 	if err != nil {
 		return claims.UserId, err
 	}

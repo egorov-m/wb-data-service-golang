@@ -61,3 +61,11 @@ type (
 		SendBatch(ctx context.Context, b *pgx.Batch) pgx.BatchResults
 	}
 )
+
+type (
+	WbWorker interface {
+		GetProduct(nmId int, isOverridden bool) error
+		UpdateProduct(nmId int) error
+		UpdatePriceHistory(nmId int) error
+	}
+)

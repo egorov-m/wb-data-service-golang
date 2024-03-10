@@ -14,7 +14,10 @@ type (
 )
 
 var (
-	C = goqu.C
+	C        = goqu.C
+	COUNT    = goqu.COUNT
+	SUM      = goqu.SUM
+	COALESCE = goqu.COALESCE
 )
 
 func init() {

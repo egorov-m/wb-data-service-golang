@@ -13,6 +13,13 @@ type AuthSignUp interface {
 	SignUp(context.Context, user.User) (token.Token, error)
 }
 
+// @Summary Sign up
+// @Tags Auth
+// @Accept  json
+// @Produce  json
+// @Param requestBody body request.SignUpBody true "Sign up"
+// @Success 200 {object} core.Token
+// @Router /auth/sign-up [post]
 func NewSignUp(useCase AuthSignUp) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
@@ -43,7 +50,7 @@ func NewSignUp(useCase AuthSignUp) gin.HandlerFunc {
 		//	return indigo.ErrorResponse(r, status.BadRequest, jsonBody)
 		//}
 		//
-		//token, err := useCase.SignUp(r.Ctx, requestBody.ToEntity())
+		//token, err := usecase.SignUp(r.Ctx, requestBody.ToEntity())
 		//if err != nil {
 		//	jsonBody := serializer.ErrorResponse(int(status.InternalServerError), err, nil)
 		//	return indigo.ErrorResponse(r, status.BadRequest, jsonBody)

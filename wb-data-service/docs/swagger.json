@@ -1,0 +1,483 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Wildberries product service API.",
+        "contact": {},
+        "license": {
+            "name": "MIT license",
+            "url": "https://github.com/egorov-m/wb-data-service-golang/blob/main/LICENSE"
+        },
+        "version": "0.0.1"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/auth/sign-in": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Sign in",
+                "parameters": [
+                    {
+                        "description": "Sign in",
+                        "name": "requestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SignInBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/core.Token"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/sign-up": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Sign up",
+                "parameters": [
+                    {
+                        "description": "Sign up",
+                        "name": "requestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SignUpBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/core.Token"
+                        }
+                    }
+                }
+            }
+        },
+        "/price-history": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Price history"
+                ],
+                "summary": "Get price history by product nm id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Wb product nm id",
+                        "name": "nm_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/core.PriceHistory"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/price-history/load": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Price history"
+                ],
+                "summary": "Load price history from wb",
+                "parameters": [
+                    {
+                        "description": "Nm id from load",
+                        "name": "requestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoadPriceHistoryInBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/product": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get product by nm id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Wb nm id",
+                        "name": "nm_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/core.Product"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Delete product by nm id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Wb nm id",
+                        "name": "nm_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/all": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all products",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/core.Product"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/count": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get count products",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/load": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Load product from wb",
+                "parameters": [
+                    {
+                        "description": "Nm id from load",
+                        "name": "requestBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoadProductInBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/quantity": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Quantity of products available",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "core.PriceHistory": {
+            "type": "object",
+            "properties": {
+                "dt": {
+                    "type": "string",
+                    "example": "2024-02-11 18:57:11.811169+00"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "nm_id": {
+                    "type": "integer",
+                    "example": 139760729
+                },
+                "price": {
+                    "type": "integer",
+                    "example": 20199000
+                }
+            }
+        },
+        "core.Product": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "type": "string",
+                    "example": "Apple"
+                },
+                "brand_id": {
+                    "type": "integer",
+                    "example": 6049
+                },
+                "colors": {
+                    "type": "string",
+                    "example": "фиолетовый"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-02-11 18:57:11.811169+00"
+                },
+                "feedbacks": {
+                    "type": "integer",
+                    "example": 31
+                },
+                "name": {
+                    "type": "string",
+                    "example": "iPhone 14 Pro Max 1TB"
+                },
+                "nm_id": {
+                    "type": "integer",
+                    "example": 139760729
+                },
+                "price": {
+                    "type": "integer",
+                    "example": 20199000
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "rating": {
+                    "type": "number",
+                    "example": 5
+                },
+                "sale": {
+                    "type": "integer",
+                    "example": 6
+                },
+                "sale_price": {
+                    "type": "integer",
+                    "example": 18987000
+                },
+                "site_brand_id": {
+                    "type": "integer",
+                    "example": 16049
+                },
+                "supplier_id": {
+                    "type": "integer",
+                    "example": 887491
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2024-02-11 18:57:11.811169+00"
+                }
+            }
+        },
+        "core.Token": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.LoadPriceHistoryInBody": {
+            "type": "object",
+            "required": [
+                "nm_id"
+            ],
+            "properties": {
+                "nm_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.LoadProductInBody": {
+            "type": "object",
+            "required": [
+                "nm_id"
+            ],
+            "properties": {
+                "nm_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.SignInBody": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 360
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 8
+                }
+            }
+        },
+        "request.SignUpBody": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 360
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 8
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

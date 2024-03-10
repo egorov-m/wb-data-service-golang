@@ -8,7 +8,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=wb_db
+      - POSTGRES_DB=wb-data-service-db
       - POSTGRES_HOST=localhost
       - POSTGRES_PORT=5432
     volumes:

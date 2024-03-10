@@ -1,6 +1,8 @@
 package token
 
-import "wb-data-service-golang/wb-data-service/internal/domain"
+import (
+	"wb-data-service-golang/wb-data-service/internal/domain"
+)
 
 type TokenAdapter interface {
 	GenerateAccess(userId int) (string, error)
