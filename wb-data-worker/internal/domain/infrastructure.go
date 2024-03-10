@@ -4,6 +4,22 @@ import (
 	"context"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"net/http"
+)
+
+type (
+	LoggerArgs map[string]any
+
+	Logger interface {
+		Debug(msg string, args LoggerArgs)
+		Error(err error, args LoggerArgs)
+		Warn(msg string, args LoggerArgs)
+		Info(msg string, args LoggerArgs)
+	}
+
+	HttpSession interface {
+		SendRequest(context.Context, *http.Request) (*http.Response, error)
+	}
 )
 
 type (
