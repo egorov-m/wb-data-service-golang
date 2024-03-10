@@ -4,7 +4,7 @@ import "context"
 
 type (
 	PriceHistoryUseCase interface {
-		Load(context.Context, PriceHistory) (bool, error)
+		Load(context.Context, PriceHistory) (PriceHistoryTask, error)
 		GetByProductNmId(context.Context, int) ([]PriceHistory, error)
 	}
 

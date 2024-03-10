@@ -28,5 +28,6 @@ func NewProductModule(dependency Dependency) core.ProductUseCase {
 		dependency.Logger,
 		productRepository,
 		dependency.Timeout,
+		dependency.WbWorker,
 	)
 }

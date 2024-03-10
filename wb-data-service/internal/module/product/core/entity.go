@@ -20,6 +20,11 @@ type Product struct {
 	UpdatedAt   time.Time `json:"updated_at" example:"2024-02-11 18:57:11.811169+00"`
 }
 
+type ProductTask struct {
+	Id   string `json:"task_id"`
+	Type string `json:"type"`
+}
+
 func (entity Product) IsEmpty() bool {
 	return entity == Product{}
 }

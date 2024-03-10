@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"github.com/hibiken/asynq"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"time"
@@ -64,8 +65,7 @@ type (
 
 type (
 	WbWorker interface {
-		GetProduct(nmId int, isOverridden bool) error
-		UpdateProduct(nmId int) error
-		UpdatePriceHistory(nmId int) error
+		ProcessTask(context.Context, string, *asynq.Task) (*asynq.TaskInfo, error)
+		ProcessTaskByName(context.Context, string, string, []byte) (*asynq.TaskInfo, error)
 	}
 )

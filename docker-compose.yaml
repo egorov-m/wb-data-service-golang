@@ -17,6 +17,17 @@ services:
       - "5438:5432"
     networks:
       - wb
+  asynqmon:
+    container_name: "asynqmon"
+    image: hibiken/asynqmon
+    environment:
+      - REDIS_ADDR=redis:6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    networks:
+      - wb
   redis:
     container_name: "redis"
     image: redis:alpine
@@ -24,6 +35,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis_data:/data
     ports:
       - "6375:6379"
     networks:

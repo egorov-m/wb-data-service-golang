@@ -28,5 +28,6 @@ func NewPriceHistoryModule(dependency Dependency) core.PriceHistoryUseCase {
 		dependency.Logger,
 		priceHistoryRepository,
 		dependency.Timeout,
+		dependency.WbWorker,
 	)
 }

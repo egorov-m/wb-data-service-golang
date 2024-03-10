@@ -15,6 +15,7 @@ import (
 	"wb-data-service-golang/wb-data-service/internal/infrastructure/crypto"
 	"wb-data-service-golang/wb-data-service/internal/infrastructure/database"
 	"wb-data-service-golang/wb-data-service/internal/infrastructure/jwt"
+	"wb-data-service-golang/wb-data-service/internal/infrastructure/worker"
 	"wb-data-service-golang/wb-data-service/internal/module/authorization"
 	"wb-data-service-golang/wb-data-service/internal/module/price-history"
 	"wb-data-service-golang/wb-data-service/internal/module/product"
@@ -28,15 +29,15 @@ const (
 	defaultUseCaseTimeout = 5 * time.Second
 )
 
-// @title        Wildberries product service API.
-// @version      0.0.1
-// @license.name MIT license
-// @license.url  https://github.com/egorov-m/wb-data-service-golang/blob/main/LICENSE
-// @BasePath /api/v1
+// @title                      Wildberries product service API.
+// @version                    0.0.1
+// @license.name               MIT license
+// @license.url                https://github.com/egorov-m/wb-data-service-golang/blob/main/LICENSE
+// @BasePath                   /api/v1
 // @securityDefinitions.apikey Bearer
-// @in header
-// @name Authorization
-// @description Type "Bearer" followed by a space and JWT token.
+// @in                         header
+// @name                       Authorization
+// @description Type "Bearer"  followed by a space and JWT token.
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
@@ -79,24 +80,25 @@ func main() {
 		Timeout:    defaultUseCaseTimeout,
 	})
 
+	wbWorker := worker.NewWbWorker(workerClient)
+
 	productModule := product.NewProductModule(product.Dependency{
 		Logger:   logger,
 		Database: database,
 		Timeout:  defaultUseCaseTimeout,
-		WbWorker: nil,
+		WbWorker: wbWorker,
 	})
 
 	priceHistoryModule := price_history.NewPriceHistoryModule(price_history.Dependency{
 		Logger:   logger,
 		Database: database,
 		Timeout:  defaultUseCaseTimeout,
-		WbWorker: nil,
+		WbWorker: wbWorker,
 	})
 
 	router := http.InitRoutes(authModule, productModule, priceHistoryModule)
 
 	if config.Env != "prod" {
-		//docs.SwaggerInfo.BasePath = "/docs"
 		router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 

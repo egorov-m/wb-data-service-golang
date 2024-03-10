@@ -4,7 +4,7 @@ import "context"
 
 type (
 	ProductUseCase interface {
-		Load(context.Context, Product) (bool, error)
+		Load(context.Context, Product) (ProductTask, error)
 		GetByNmId(context.Context, Product) (Product, error)
 		GetAll(context.Context) ([]Product, error)
 		GetCount(context.Context) (int, error)

@@ -150,7 +150,7 @@ const docTemplate = `{
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "type": "boolean"
+                            "$ref": "#/definitions/core.PriceHistoryTask"
                         }
                     }
                 }
@@ -291,7 +291,7 @@ const docTemplate = `{
                     "202": {
                         "description": "Accepted",
                         "schema": {
-                            "type": "boolean"
+                            "$ref": "#/definitions/core.ProductTask"
                         }
                     }
                 }
@@ -338,6 +338,17 @@ const docTemplate = `{
                 "price": {
                     "type": "integer",
                     "example": 20199000
+                }
+            }
+        },
+        "core.PriceHistoryTask": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
@@ -403,6 +414,17 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string",
                     "example": "2024-02-11 18:57:11.811169+00"
+                }
+            }
+        },
+        "core.ProductTask": {
+            "type": "object",
+            "properties": {
+                "task_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
@@ -482,7 +504,7 @@ const docTemplate = `{
     },
     "securityDefinitions": {
         "Bearer": {
-            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "description": "Type \"Bearer\"  followed by a space and JWT token.",
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"

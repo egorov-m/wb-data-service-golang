@@ -8,3 +8,8 @@ type PriceHistory struct {
 	Dt    time.Time `json:"dt" example:"2024-02-11 18:57:11.811169+00"`
 	Price int       `json:"price" example:"20199000"`
 }
+
+type PriceHistoryTask struct {
+	Id   string `json:"task_id"`
+	Type string `json:"type"`
+}

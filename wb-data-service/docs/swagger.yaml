@@ -15,6 +15,13 @@ definitions:
         example: 20199000
         type: integer
     type: object
+  core.PriceHistoryTask:
+    properties:
+      task_id:
+        type: string
+      type:
+        type: string
+    type: object
   core.Product:
     properties:
       brand:
@@ -61,6 +68,13 @@ definitions:
         type: integer
       updated_at:
         example: 2024-02-11 18:57:11.811169+00
+        type: string
+    type: object
+  core.ProductTask:
+    properties:
+      task_id:
+        type: string
+      type:
         type: string
     type: object
   core.Token:
@@ -200,7 +214,7 @@ paths:
         "202":
           description: Accepted
           schema:
-            type: boolean
+            $ref: '#/definitions/core.PriceHistoryTask'
       security:
       - Bearer: []
       summary: Load price history from wb
@@ -284,7 +298,7 @@ paths:
         "202":
           description: Accepted
           schema:
-            type: boolean
+            $ref: '#/definitions/core.ProductTask'
       security:
       - Bearer: []
       summary: Load product from wb
@@ -304,7 +318,7 @@ paths:
       - Product
 securityDefinitions:
   Bearer:
-    description: Type "Bearer" followed by a space and JWT token.
+    description: Type "Bearer"  followed by a space and JWT token.
     in: header
     name: Authorization
     type: apiKey

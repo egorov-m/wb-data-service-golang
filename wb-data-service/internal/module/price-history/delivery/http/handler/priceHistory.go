@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -11,7 +10,7 @@ import (
 )
 
 type PriceHistory interface {
-	Load(context.Context, int) (bool, error)
+	Load(context.Context, int) (core.PriceHistoryTask, error)
 	GetByProductNmId(context.Context, int) ([]core.PriceHistory, error)
 }
 
@@ -19,7 +18,7 @@ type PriceHistory interface {
 // @Tags Price history
 // @Accept  json
 // @Param requestBody body request.LoadPriceHistoryInBody true "Nm id from load"
-// @Success 202 {object} bool
+// @Success 202 {object} core.PriceHistoryTask
 // @Router /price-history/load [post]
 // @Security Bearer
 func NewLoad(useCase core.PriceHistoryUseCase) gin.HandlerFunc {
@@ -42,7 +41,7 @@ func NewLoad(useCase core.PriceHistoryUseCase) gin.HandlerFunc {
 			return
 		}
 
-		c.String(http.StatusAccepted, fmt.Sprintf("%t", res))
+		c.JSON(http.StatusAccepted, res)
 	}
 }
 

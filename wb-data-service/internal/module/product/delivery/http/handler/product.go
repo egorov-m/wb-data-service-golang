@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -11,7 +10,7 @@ import (
 )
 
 type Product interface {
-	Load(ctx context.Context, product product.Product) (bool, error)
+	Load(ctx context.Context, product product.Product) (product.ProductTask, error)
 	GetByNmId(ctx context.Context) (product.Product, error)
 	GetAll(ctx context.Context) ([]product.Product, error)
 	NewGetCount(ctx context.Context) (int, error)
@@ -23,7 +22,7 @@ type Product interface {
 // @Tags Product
 // @Accept  json
 // @Param requestBody body request.LoadProductInBody true "Nm id from load"
-// @Success 202 {object} bool
+// @Success 202 {object} core.ProductTask
 // @Router /product/load [post]
 // @Security Bearer
 func NewLoad(useCase product.ProductUseCase) gin.HandlerFunc {
@@ -46,7 +45,7 @@ func NewLoad(useCase product.ProductUseCase) gin.HandlerFunc {
 			return
 		}
 
-		c.String(http.StatusAccepted, fmt.Sprintf("%t", res))
+		c.JSON(http.StatusAccepted, res)
 	}
 }
 
