@@ -20,7 +20,7 @@ func NewAuthMiddleware(authModule auth.AuthorizationUseCase) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, domain.ErrorInvalidToken)
 			return
 		}
-		userId, err := authModule.CheckToken(c, splitted[1])
+		userId, err := authModule.CheckToken(c, splitted[1], "access")
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
 			return

@@ -10,6 +10,6 @@ type (
 	AuthorizationUseCase interface {
 		SignIn(context.Context, user.User) (token.Token, error)
 		SignUp(context.Context, user.User) (token.Token, error)
-		CheckToken(context.Context, string) (int, error)
+		CheckToken(context.Context, string, string) (int, error)
 	}
 )

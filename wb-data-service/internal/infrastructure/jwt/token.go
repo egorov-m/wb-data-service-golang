@@ -14,8 +14,9 @@ const (
 
 type _TokenClaims struct {
 	jwt.Claims
-	UserId     int   `json:"user_id"`
-	Expiration int64 `json:"expiration"`
+	UserId     int    `json:"user_id"`
+	Expiration int64  `json:"expiration"`
+	Type       string `json:"type"`
 }
 
 type _TokenManager struct {
@@ -28,10 +29,11 @@ func NewTokenManager(tokenSalt string) domain.TokenManager {
 	}
 }
 
-func (tokenManager *_TokenManager) generateToken(userId int, expiration time.Duration) (string, error) {
+func (tokenManager *_TokenManager) generateToken(userId int, expiration time.Duration, tokenType string) (string, error) {
 	claims := _TokenClaims{
 		UserId:     userId,
 		Expiration: time.Now().Add(expiration).Unix(),
+		Type:       tokenType,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -44,15 +46,15 @@ func (tokenManager *_TokenManager) generateToken(userId int, expiration time.Dur
 }
 
 func (tokenManager *_TokenManager) GenerateAccess(userId int) (string, error) {
-	return tokenManager.generateToken(userId, expirationAccessTime)
+	return tokenManager.generateToken(userId, expirationAccessTime, "access")
 }
 
 func (tokenManager *_TokenManager) GenerateRefresh(userId int) (string, error) {
-	return tokenManager.generateToken(userId, expirationRefreshTime)
+	return tokenManager.generateToken(userId, expirationRefreshTime, "refresh")
 }
 
 func (tokenManager *_TokenManager) Parse(token string) (domain.TokenClaims, error) {
-	signedToken, err := jwt.Parse(token, func(t *jwt.Token) (any, error) {
+	signedToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, domain.ErrorInvalidType
 		}
@@ -67,13 +69,14 @@ func (tokenManager *_TokenManager) Parse(token string) (domain.TokenClaims, erro
 		return domain.TokenClaims{}, domain.ErrorInvalidToken
 	}
 
-	claims, ok := signedToken.Claims.(_TokenClaims)
+	claims, ok := signedToken.Claims.(jwt.MapClaims)
 	if !ok {
 		return domain.TokenClaims{}, domain.ErrorInvalidToken
 	}
 
 	return domain.TokenClaims{
-		UserId:     claims.UserId,
-		Expiration: time.Unix(claims.Expiration, 0),
+		UserId:     int(claims["user_id"].(float64)),
+		Expiration: time.Unix(int64(claims["expiration"].(float64)), 0),
+		Type:       claims["type"].(string),
 	}, nil
 }

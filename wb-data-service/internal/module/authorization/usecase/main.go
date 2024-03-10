@@ -43,12 +43,12 @@ func (useCase *_AuthorizationUseCase) GenerateUserTokens(ctx context.Context, en
 		return token.Token{}, errors.Wrap(err, "generate access token error")
 	}
 
-	refreshToken, err := useCase.TokenRepository.GenerateRefreshToken(ctx, entity.Id)
-	if err != nil {
-		return token.Token{}, errors.Wrap(err, "generate refresh token error")
-	}
+	//refreshToken, err := useCase.TokenRepository.GenerateRefreshToken(ctx, entity.Id)
+	//if err != nil {
+	//	return token.Token{}, errors.Wrap(err, "generate refresh token error")
+	//}
 
-	return utils.NewToken(accessToken, refreshToken), nil
+	return utils.NewToken(accessToken), nil
 }
 
 func (useCase *_AuthorizationUseCase) GenerateAndSetPassword(ctx context.Context, entity *user.User) error {
@@ -61,10 +61,13 @@ func (useCase *_AuthorizationUseCase) GenerateAndSetPassword(ctx context.Context
 	return nil
 }
 
-func (useCase *_AuthorizationUseCase) CheckToken(ctx context.Context, bearerToken string) (int, error) {
+func (useCase *_AuthorizationUseCase) CheckToken(ctx context.Context, bearerToken string, tokenType string) (int, error) {
 	claims, err := useCase.TokenRepository.DecodeToken(ctx, bearerToken)
 	if err != nil {
 		return claims.UserId, err
+	}
+	if claims.Type != tokenType {
+		return claims.UserId, domain.ErrorInvalidToken
 	}
 	if time.Now().Before(claims.Expiration) {
 		return claims.UserId, nil

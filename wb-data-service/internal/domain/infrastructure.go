@@ -37,6 +37,7 @@ type (
 	TokenClaims struct {
 		UserId     int
 		Expiration time.Time
+		Type       string
 	}
 
 	TokenManager interface {

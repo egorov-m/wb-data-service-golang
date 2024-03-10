@@ -81,8 +81,6 @@ definitions:
     properties:
       access_token:
         type: string
-      refresh_token:
-        type: string
     type: object
   request.LoadPriceHistoryInBody:
     properties:
