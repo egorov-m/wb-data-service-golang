@@ -3,6 +3,7 @@ module wb-data-service-golang/wb-data-worker
 go 1.21.6
 
 require (
+	github.com/doug-martin/goqu/v9 v9.19.0
 	github.com/hibiken/asynq v0.24.1
 	github.com/jackc/pgx/v5 v5.5.3
 	github.com/pkg/errors v0.9.1

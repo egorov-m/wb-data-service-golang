@@ -1,4 +1,4 @@
-package httpSession
+package httpClient
 
 import (
 	"context"
@@ -12,7 +12,7 @@ type _HttpSession struct {
 	SuccessCodes map[int]bool
 }
 
-func NewHttpSession(client *http.Client, successCodes map[int]bool) domain.HttpSession {
+func NewHttpClient(client *http.Client, successCodes map[int]bool) domain.HttpClient {
 	return &_HttpSession{
 		Client:       client,
 		SuccessCodes: successCodes,

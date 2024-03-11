@@ -17,7 +17,7 @@ type (
 		Info(msg string, args LoggerArgs)
 	}
 
-	HttpSession interface {
+	HttpClient interface {
 		SendRequest(context.Context, *http.Request) (*http.Response, error)
 	}
 )

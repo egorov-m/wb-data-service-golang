@@ -20,6 +20,7 @@ services:
   asynqmon:
     container_name: "asynqmon"
     image: hibiken/asynqmon
+    restart: on-failure
     environment:
       - REDIS_ADDR=redis:6379
     ports:

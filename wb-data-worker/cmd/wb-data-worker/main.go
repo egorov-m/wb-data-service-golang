@@ -1,20 +1,28 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/hibiken/asynq"
 	"log"
-	"net/http"
+	"os"
+	"os/signal"
 	"time"
 	"wb-data-service-golang/wb-data-worker/config"
-	"wb-data-service-golang/wb-data-worker/internal/infrastructure/httpSession"
+	"wb-data-service-golang/wb-data-worker/internal/infrastructure/database"
 	"wb-data-service-golang/wb-data-worker/internal/infrastructure/logger"
-	tasks2 "wb-data-service-golang/wb-data-worker/internal/tasks"
+	"wb-data-service-golang/wb-data-worker/internal/module/tasks"
+	"wb-data-service-golang/wb-data-worker/internal/module/tasks/core"
+	"wb-data-service-golang/wb-data-worker/pkg/pgxpool"
+)
+
+const (
+	defaultUseCaseTimeout = 5 * time.Second
 )
 
 func main() {
-	//ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
-	//defer cancel()
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
 
 	config := config.New(".")
 
@@ -25,9 +33,9 @@ func main() {
 		Addr: fmt.Sprintf("%s:%d", config.Redis.Host, config.Redis.Port),
 	}
 
-	//pgxpool := pgxpool.NewDatabase(ctx, config.DatabaseDsn)
-	//defer pgxpool.Close()
-	//database := database.NewDatabaseManager(pgxpool, nil)
+	pgxpool := pgxpool.NewDatabase(ctx, config.DatabaseDsn)
+	defer pgxpool.Close()
+	database := database.NewDatabaseManager(pgxpool, nil)
 
 	worker := asynq.NewServer(redisConnection, asynq.Config{
 		// Specify how many concurrent workers to use.
@@ -39,16 +47,17 @@ func main() {
 			"low":      1, // processed 10% of the time
 		},
 	})
-	httpClient := &http.Client{
-		Timeout: time.Second * 10,
-	}
-	session := httpSession.NewHttpSession(httpClient, map[int]bool{200: true})
-	wbTasks := tasks2.NewWbTasks(logger, session)
+
+	tasksModule := tasks.NewTasksModule(tasks.Dependency{
+		Logger:   logger,
+		Database: database,
+		Timeout:  defaultUseCaseTimeout,
+	})
 
 	mux := asynq.NewServeMux()
 
-	mux.HandleFunc(tasks2.TypeLoadProduct, wbTasks.LoadProduct)
-	mux.HandleFunc(tasks2.TypeLoadPriceHistory, wbTasks.LoadPriceHistory)
+	mux.HandleFunc(core.TypeLoadProduct, tasksModule.LoadProduct)
+	mux.HandleFunc(core.TypeLoadPriceHistory, tasksModule.LoadPriceHistory)
 
 	// Run worker server.
 	if err := worker.Run(mux); err != nil {
