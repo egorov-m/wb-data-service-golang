@@ -59,7 +59,7 @@ func (useCase *_WbTasksUseCase) LoadProduct(ctx context.Context, task *asynq.Tas
 		return err
 	}
 
-	err = useCase.ProductRepository.MergeProductByNmId(ctx, productDetailData)
+	err = useCase.ProductRepository.MergeByNmId(ctx, productDetailData)
 	if err != nil {
 		useCase.Logger.Error(err, domain.LoggerArgs{
 			"nm_id": data["nm_id"],
@@ -67,7 +67,7 @@ func (useCase *_WbTasksUseCase) LoadProduct(ctx context.Context, task *asynq.Tas
 		return err
 	}
 
-	useCase.Logger.Info("Success load product ", domain.LoggerArgs{
+	useCase.Logger.Info("Success load product", domain.LoggerArgs{
 		"nm_id": data["nm_id"],
 	})
 

@@ -8,7 +8,7 @@ import (
 	"wb-data-service-golang/wb-data-worker/internal/module/product/repository/internal/query"
 )
 
-func (repository *_ProductRepository) MergeProductByNmId(ctx context.Context, entity core.WbProductDetail) error {
+func (repository *_ProductRepository) MergeByNmId(ctx context.Context, entity core.WbProductDetail) error {
 	insertModel, err := model.NewProduct(entity)
 	if err != nil {
 		return err

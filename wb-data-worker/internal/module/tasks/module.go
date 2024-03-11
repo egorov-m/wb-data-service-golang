@@ -5,9 +5,12 @@ import (
 	"time"
 	"wb-data-service-golang/wb-data-worker/internal/domain"
 	"wb-data-service-golang/wb-data-worker/internal/infrastructure/httpClient"
-	"wb-data-service-golang/wb-data-worker/internal/module/product/adapter/postgres"
-	"wb-data-service-golang/wb-data-worker/internal/module/product/repository"
-	"wb-data-service-golang/wb-data-worker/internal/module/product/repository/shared"
+	priceHistoryPostgres "wb-data-service-golang/wb-data-worker/internal/module/price-history/adapter/postgres"
+	priceHistory "wb-data-service-golang/wb-data-worker/internal/module/price-history/repository"
+	"wb-data-service-golang/wb-data-worker/internal/module/price-history/repository/shared"
+	productPostgres "wb-data-service-golang/wb-data-worker/internal/module/product/adapter/postgres"
+	product "wb-data-service-golang/wb-data-worker/internal/module/product/repository"
+	productShared "wb-data-service-golang/wb-data-worker/internal/module/product/repository/shared"
 	"wb-data-service-golang/wb-data-worker/internal/module/tasks/core"
 	"wb-data-service-golang/wb-data-worker/internal/module/tasks/usecase"
 )
@@ -19,9 +22,13 @@ type Dependency struct {
 }
 
 func NewTasksModule(dependency Dependency) core.WbTasksUseCase {
-	productPostgresAdapter := postgres.NewPostgresManagerAdapter[shared.ProductModel](dependency.Database)
-	productRepository := repository.NewProductRepository(
+	productPostgresAdapter := productPostgres.NewPostgresManagerAdapter[productShared.ProductModel](dependency.Database)
+	productRepository := product.NewProductRepository(
 		productPostgresAdapter,
+	)
+	priceHistoryPostgresAdapter := priceHistoryPostgres.NewPostgresManagerAdapter[shared.PriceHistoryModel](dependency.Database)
+	priceHistoryRepository := priceHistory.NewPriceHistoryRepository(
+		priceHistoryPostgresAdapter,
 	)
 
 	baseHttpClient := &http.Client{
@@ -33,6 +40,7 @@ func NewTasksModule(dependency Dependency) core.WbTasksUseCase {
 		dependency.Logger,
 		client,
 		productRepository,
+		priceHistoryRepository,
 		dependency.Timeout,
 	)
 }

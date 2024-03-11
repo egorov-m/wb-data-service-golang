@@ -4,6 +4,6 @@ import "context"
 
 type (
 	ProductRepository interface {
-		MergeProductByNmId(context.Context, WbProductDetail) error
+		MergeByNmId(context.Context, WbProductDetail) error
 	}
 )
