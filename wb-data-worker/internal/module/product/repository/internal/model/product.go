@@ -47,7 +47,8 @@ func NewProduct(entity core.WbProductDetail) (Product, error) {
 		size := value.(map[string]interface{})
 		stocks := size["stocks"].([]interface{})
 		for _, stock := range stocks {
-			quantity += int(stock.(map[string]interface{})["dty"].(float64))
+			s := stock.(map[string]interface{})
+			quantity += int(s["qty"].(float64))
 		}
 	}
 

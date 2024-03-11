@@ -104,7 +104,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Wb product nm id",
                         "name": "nm_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -175,7 +175,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Wb nm id",
                         "name": "nm_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -203,7 +203,7 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Wb nm id",
                         "name": "nm_id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],

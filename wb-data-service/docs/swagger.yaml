@@ -179,7 +179,7 @@ paths:
     get:
       parameters:
       - description: Wb product nm id
-        in: path
+        in: query
         name: nm_id
         required: true
         type: integer
@@ -222,7 +222,7 @@ paths:
     delete:
       parameters:
       - description: Wb nm id
-        in: path
+        in: query
         name: nm_id
         required: true
         type: integer
@@ -239,7 +239,7 @@ paths:
     get:
       parameters:
       - description: Wb nm id
-        in: path
+        in: query
         name: nm_id
         required: true
         type: integer

@@ -18,12 +18,12 @@ type Product interface {
 	NewDeleteByNmId(ctx context.Context) (bool, error)
 }
 
-// @Summary Load product from wb
-// @Tags Product
-// @Accept  json
-// @Param requestBody body request.LoadProductInBody true "Nm id from load"
-// @Success 202 {object} core.ProductTask
-// @Router /product/load [post]
+// @Summary  Load product from wb
+// @Tags     Product
+// @Accept   json
+// @Param    requestBody   body     request.LoadProductInBody true "Nm id from load"
+// @Success  202           {object} core.ProductTask
+// @Router   /product/load [post]
 // @Security Bearer
 func NewLoad(useCase product.ProductUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -49,12 +49,12 @@ func NewLoad(useCase product.ProductUseCase) gin.HandlerFunc {
 	}
 }
 
-// @Summary Get product by nm id
-// @Tags Product
+// @Summary  Get product by nm id
+// @Tags     Product
 // @Produce  json
-// @Param nm_id path int true "Wb nm id"
-// @Success 200 {object} core.Product
-// @Router /product [get]
+// @Param    nm_id    query int true "Wb nm id"
+// @Success  200      {object} core.Product
+// @Router   /product [get]
 // @Security Bearer
 func NewGetByNmId(useCase product.ProductUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -77,10 +77,10 @@ func NewGetByNmId(useCase product.ProductUseCase) gin.HandlerFunc {
 	}
 }
 
-// @Summary Get all products
-// @Tags Product
-// @Success 200 {object} []core.Product
-// @Router /product/all [get]
+// @Summary  Get all products
+// @Tags     Product
+// @Success  200 {object} []core.Product
+// @Router   /product/all [get]
 // @Security Bearer
 func NewGetAll(useCase product.ProductUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -96,10 +96,10 @@ func NewGetAll(useCase product.ProductUseCase) gin.HandlerFunc {
 	}
 }
 
-// @Summary Get count products
-// @Tags Product
-// @Success 200 {object} int
-// @Router /product/count [get]
+// @Summary  Get count products
+// @Tags     Product
+// @Success  200            {object} int
+// @Router   /product/count [get]
 // @Security Bearer
 func NewGetCount(useCase product.ProductUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -115,10 +115,10 @@ func NewGetCount(useCase product.ProductUseCase) gin.HandlerFunc {
 	}
 }
 
-// @Summary Quantity of products available
-// @Tags Product
-// @Success 200 {object} int
-// @Router /product/quantity [get]
+// @Summary  Quantity of products available
+// @Tags     Product
+// @Success  200              {object} int
+// @Router   /product/quantity [get]
 // @Security Bearer
 func NewGetQuantity(useCase product.ProductUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -134,11 +134,11 @@ func NewGetQuantity(useCase product.ProductUseCase) gin.HandlerFunc {
 	}
 }
 
-// @Summary Delete product by nm id
-// @Tags Product
-// @Param nm_id path int true "Wb nm id"
-// @Success 204 {object} bool
-// @Router /product [delete]
+// @Summary  Delete product by nm id
+// @Tags     Product
+// @Param    nm_id    query    int true "Wb nm id"
+// @Success  204      {object} bool
+// @Router   /product [delete]
 // @Security Bearer
 func NewDeleteByNmId(useCase product.ProductUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {

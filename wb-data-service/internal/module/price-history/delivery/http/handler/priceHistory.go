@@ -14,12 +14,12 @@ type PriceHistory interface {
 	GetByProductNmId(context.Context, int) ([]core.PriceHistory, error)
 }
 
-// @Summary Load price history from wb
-// @Tags Price history
-// @Accept  json
-// @Param requestBody body request.LoadPriceHistoryInBody true "Nm id from load"
-// @Success 202 {object} core.PriceHistoryTask
-// @Router /price-history/load [post]
+// @Summary  Load price history from wb
+// @Tags     Price history
+// @Accept   json
+// @Param    requestBody         body request.LoadPriceHistoryInBody true "Nm id from load"
+// @Success  202                 {object} core.PriceHistoryTask
+// @Router   /price-history/load [post]
 // @Security Bearer
 func NewLoad(useCase core.PriceHistoryUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -45,12 +45,12 @@ func NewLoad(useCase core.PriceHistoryUseCase) gin.HandlerFunc {
 	}
 }
 
-// @Summary Get price history by product nm id
-// @Tags Price history
+// @Summary  Get price history by product nm id
+// @Tags     Price history
 // @Produce  json
-// @Param nm_id path int true "Wb product nm id"
-// @Success 200 {object} []core.PriceHistory
-// @Router /price-history [get]
+// @Param    nm_id          query    int true "Wb product nm id"
+// @Success  200            {object} []core.PriceHistory
+// @Router   /price-history [get]
 // @Security Bearer
 func NewGetByProductNmId(useCase core.PriceHistoryUseCase) gin.HandlerFunc {
 	return func(c *gin.Context) {
